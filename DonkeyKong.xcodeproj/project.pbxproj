@@ -14,6 +14,7 @@
 		3146C34A2797A8AD00393226 /* DonkeyKongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3492797A8AD00393226 /* DonkeyKongTests.swift */; };
 		3146C3542797A8AD00393226 /* DonkeyKongUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3532797A8AD00393226 /* DonkeyKongUITests.swift */; };
 		3146C3562797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3552797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift */; };
+		3146C3632797AA3D00393226 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3622797AA3D00393226 /* GameScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		3146C34F2797A8AD00393226 /* DonkeyKongUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DonkeyKongUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3146C3532797A8AD00393226 /* DonkeyKongUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonkeyKongUITests.swift; sourceTree = "<group>"; };
 		3146C3552797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonkeyKongUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3146C3622797AA3D00393226 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 		3146C3372797A8AC00393226 /* DonkeyKong */ = {
 			isa = PBXGroup;
 			children = (
+				3146C3622797AA3D00393226 /* GameScene.swift */,
 				3146C3382797A8AC00393226 /* DonkeyKongApp.swift */,
 				3146C33A2797A8AC00393226 /* ContentView.swift */,
 				3146C33C2797A8AD00393226 /* Assets.xcassets */,
@@ -257,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3146C3632797AA3D00393226 /* GameScene.swift in Sources */,
 				3146C33B2797A8AC00393226 /* ContentView.swift in Sources */,
 				3146C3392797A8AC00393226 /* DonkeyKongApp.swift in Sources */,
 			);
