@@ -19,22 +19,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
         
         // creates the platforms
-        let platformWidth = 800
-        let platformHeight = 25
-        addChild(createRectangleObject(w: platformWidth, h: platformHeight, x: size.width / 3, y: size.height / 6, color: SKColor.red, rotation: -CGFloat.pi / 64))
-        addChild(createRectangleObject(w: platformWidth, h: platformHeight, x: size.width * 2 / 3, y: size.height * 2 / 6, color: SKColor.red,rotation: CGFloat.pi / 64))
-        addChild(createRectangleObject(w: platformWidth, h: platformHeight, x: size.width / 3, y: size.height * 3 / 6, color: SKColor.red,rotation: -CGFloat.pi / 64))
-        addChild(createRectangleObject(w: platformWidth, h: platformHeight, x: size.width * 2 / 3, y: size.height * 4 / 6, color: SKColor.red,rotation: CGFloat.pi / 64))
-        addChild(createRectangleObject(w: platformWidth, h: platformHeight, x: size.width / 3, y: size.height * 5 / 6, color: SKColor.red, rotation: -CGFloat.pi / 64))
+
+        addChild(createPlatform(x: size.width / 3, y: size.height / 6, rotation: -CGFloat.pi / 48))
+        addChild(createPlatform(x: size.width * 2 / 3, y: size.height * 2 / 6, rotation: CGFloat.pi / 48))
+        addChild(createPlatform(x: size.width / 3, y: size.height * 3 / 6, rotation: -CGFloat.pi / 48))
+        addChild(createPlatform(x: size.width * 2 / 3, y: size.height * 4 / 6, rotation: CGFloat.pi / 48))
+        addChild(createPlatform(x: size.width / 3, y: size.height * 5 / 6, rotation: -CGFloat.pi / 48))
         
         // creates the ladders
-        let ladderWidth = 50
         let ladderHeight = 200
-        addChild(createRectangleObject(w: ladderWidth, h: ladderHeight, x: size.width / 3, y: size.height / 6 + CGFloat(ladderHeight) / 2,color: SKColor.cyan, rotation: -CGFloat.pi / 64))
-        addChild(createRectangleObject(w: ladderWidth, h: ladderHeight, x: size.width * 2 / 3, y: size.height * 2 / 6 + CGFloat(ladderHeight) / 2,color: SKColor.cyan, rotation: CGFloat.pi / 64))
-        addChild(createRectangleObject(w: ladderWidth, h: ladderHeight, x: size.width / 3, y: size.height * 3 / 6 + CGFloat(ladderHeight) / 2,color: SKColor.cyan, rotation: -CGFloat.pi / 64))
-        addChild(createRectangleObject(w: ladderWidth, h: ladderHeight, x: size.width * 2 / 3, y: size.height * 4 / 6 + CGFloat(ladderHeight) / 2,color: SKColor.cyan, rotation: CGFloat.pi / 64))
-        addChild(createRectangleObject(w: ladderWidth, h: ladderHeight, x: size.width / 3, y: size.height * 5 / 6 + CGFloat(ladderHeight) / 2,color: SKColor.cyan, rotation: -CGFloat.pi / 64))
+        addChild(createLadder(x: size.width / 3, y: size.height / 6 + CGFloat(ladderHeight) / 2, rotation: -CGFloat.pi / 48))
+        addChild(createLadder(x: size.width * 2 / 3, y: size.height * 2 / 6 + CGFloat(ladderHeight) / 2, rotation: CGFloat.pi / 48))
+        addChild(createLadder(x: size.width / 3, y: size.height * 3 / 6 + CGFloat(ladderHeight) / 2, rotation: -CGFloat.pi / 48))
+        addChild(createLadder(x: size.width * 2 / 3, y: size.height * 4 / 6 + CGFloat(ladderHeight) / 2, rotation: CGFloat.pi / 48))
+        addChild(createLadder (x: size.width / 3, y: size.height * 5 / 6 + CGFloat(ladderHeight) / 2, rotation: -CGFloat.pi / 48))
 
         
         addChild(createBarrels(radius: 30))
@@ -47,22 +45,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         barrel.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         barrel.fillColor = SKColor.orange
         barrel.position = CGPoint(x: size.width / 2, y: size.height * 9 / 10)
+        barrel.physicsBody?.categoryBitMask = 1
+        barrel.physicsBody?.contactTestBitMask = 0
+        barrel.physicsBody?.friction = 0.7
         
         return barrel
     }
     
-    func createRectangleObject(w: Int, h: Int, x: CGFloat, y: CGFloat, color: SKColor, rotation: CGFloat) -> SKShapeNode {
-        let rect = SKShapeNode(rectOf: CGSize(width: w, height: h))
+    func createPlatform(x: CGFloat, y: CGFloat,rotation: CGFloat) -> SKShapeNode {
+        let rect = SKShapeNode(rectOf: CGSize(width: 650, height: 25))
         
-        rect.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: w, height: h))
-        rect.fillColor = color
+        rect.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 650, height: 25))
+        rect.fillColor = SKColor.red
         rect.position = CGPoint(x: x, y: y)
         rect.zRotation = rotation
         rect.physicsBody?.affectedByGravity = false
         rect.physicsBody?.isDynamic = false
+        rect.physicsBody?.contactTestBitMask = 1
+        rect.physicsBody?.collisionBitMask = 0
+        
         //rect.physicsBody?.pinned = true
         
         return rect
     }
+    
+    func createLadder(x: CGFloat, y: CGFloat, rotation: CGFloat) -> SKShapeNode {
+        let rect = SKShapeNode(rectOf: CGSize(width: 50, height: 200))
+        
+        rect.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 200))
+        rect.fillColor = SKColor.cyan
+        rect.position = CGPoint(x: x, y: y)
+        rect.zRotation = rotation
+        rect.physicsBody?.affectedByGravity = false
+        rect.physicsBody?.isDynamic = false
+        rect.physicsBody?.categoryBitMask = 0
+        rect.physicsBody?.collisionBitMask = 1
+        
+        //rect.physicsBody?.pinned = true
+        
+        return rect
+    }
+    
 
 }
