@@ -11,12 +11,25 @@ import GameKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    let player = SKShapeNode(rectOf: CGSize(width: 50, height: 50))
     
+    var barrelTimer = Timer()
     
     override func didMove(to view: SKView) {
         anchorPoint = .zero
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+        
+        // create the player
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50))
+        player.fillColor = SKColor.green
+        player.position = CGPoint(x:size.width / 2, y:size.width / 2)
+        
+        player.physicsBody?.categoryBitMask = 1
+        player.physicsBody?.contactTestBitMask = 0
+        player.physicsBody?.friction = 0.7
+        
+        addChild(player)
         
         // creates the platforms
 
@@ -35,7 +48,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(createLadder (x: size.width / 3, y: size.height * 5 / 6 + CGFloat(ladderHeight) / 2, rotation: -CGFloat.pi / 48))
 
         
-        addChild(createBarrels(radius: 30))
+        
+        
+        barrelTimer = .scheduledTimer(timeInterval: 5, target: self,
+                                                selector:#selector(addChild(createBarrels(radius: 30))),
+                                                userInfo: nil,
+                                                repeats: true)
+        
+        
             
     }
     
