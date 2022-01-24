@@ -15,6 +15,7 @@
 		3146C3542797A8AD00393226 /* DonkeyKongUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3532797A8AD00393226 /* DonkeyKongUITests.swift */; };
 		3146C3562797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3552797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift */; };
 		3146C3632797AA3D00393226 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3622797AA3D00393226 /* GameScene.swift */; };
+		319DAE63279DAF69009B1DB1 /* TLAnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319DAE62279DAF69009B1DB1 /* TLAnalogJoystick.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		3146C3532797A8AD00393226 /* DonkeyKongUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonkeyKongUITests.swift; sourceTree = "<group>"; };
 		3146C3552797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonkeyKongUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		3146C3622797AA3D00393226 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		319DAE62279DAF69009B1DB1 /* TLAnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TLAnalogJoystick.swift; path = "../../../Downloads/TLAnalogJoystick-master/AnalogStick Demo/AnalogStick Demo/TLAnalogJoystick.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 		3146C3372797A8AC00393226 /* DonkeyKong */ = {
 			isa = PBXGroup;
 			children = (
+				319DAE62279DAF69009B1DB1 /* TLAnalogJoystick.swift */,
 				3146C3622797AA3D00393226 /* GameScene.swift */,
 				3146C3382797A8AC00393226 /* DonkeyKongApp.swift */,
 				3146C33A2797A8AC00393226 /* ContentView.swift */,
@@ -263,6 +266,7 @@
 				3146C3632797AA3D00393226 /* GameScene.swift in Sources */,
 				3146C33B2797A8AC00393226 /* ContentView.swift in Sources */,
 				3146C3392797A8AC00393226 /* DonkeyKongApp.swift in Sources */,
+				319DAE63279DAF69009B1DB1 /* TLAnalogJoystick.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
