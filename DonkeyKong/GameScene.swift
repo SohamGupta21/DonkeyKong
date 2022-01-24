@@ -13,8 +13,10 @@ import SwiftUI
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let player = SKShapeNode(rectOf: CGSize(width: 50, height: 50))
-    var donkeyKong = SKShapeNode()
+    var donkeyKong = SKSpriteNode()
     var princess = SKShapeNode()
+    
+    let donkeyKongTextures = [SKTexture(image: #imageLiteral(resourceName: "kong1")), SKTexture(image: #imageLiteral(resourceName: "kong2")), SKTexture(image: #imageLiteral(resourceName: "kong3")), SKTexture(image: #imageLiteral(resourceName: "kong4")), SKTexture(image: #imageLiteral(resourceName: "kong5")), SKTexture(image: #imageLiteral(resourceName: "kong6"))]
     
     var barrelTimer = Timer()
     
@@ -59,7 +61,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // create the player
         createPlayer()
         donkeyKong = createStaticPlayer(x: size.width / 4, y: size.height * 9 / 10, size: 125)
-        princess = createStaticPlayer(x: size.width / 2, y: size.height * 8 / 9 + 50, size: 50)
+        
+        let dkAnimation = SKAction.animate(with: donkeyKongTextures, timePerFrame: 0.4)
+        
+        donkeyKong.run(SKAction.repeatForever(dkAnimation))
+//        princess = createStaticPlayer(x: size.width / 2, y: size.height * 8 / 9 + 50, size: 50)
 
         // https://github.com/MitrofD/TLAnalogJoystick
         
@@ -179,12 +185,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return rect
     }
     
-    func createStaticPlayer(x: CGFloat, y: CGFloat, size: CGFloat) -> SKShapeNode {
-        let player = SKShapeNode(rectOf: CGSize(width: size, height: size))
+    func createStaticPlayer(x: CGFloat, y: CGFloat, size: CGFloat) -> SKSpriteNode {
+        let player = SKSpriteNode(imageNamed: "kong1")
         
         player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size, height: size))
-        player.fillColor = SKColor.purple
+        // player.fillColor = SKColor.purple
         player.position = CGPoint(x: x, y: y)
+        player.texture  = SKTexture(image: #imageLiteral(resourceName: "kong1"))
         
         self.addChild(player)
         
