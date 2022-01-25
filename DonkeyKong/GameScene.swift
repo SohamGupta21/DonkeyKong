@@ -27,7 +27,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var barrelTimer = Timer()
     
-    let joystick = TLAnalogJoystick(withDiameter: 100)
+    let joystick = TLAnalogJoystick(withDiameter: 150)
     let jumpButton = SKShapeNode(circleOfRadius: 100)
     
     var ladders : [SKSpriteNode] = []
@@ -38,6 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let ladderCategory: UInt32 = 0x1 << 1
     let playerCategory: UInt32 = 0x1 << 2
     let barrelCategory: UInt32 = 0x1 << 3
+    let princessCategory: UInt32 = 0x1 << 4
     
     var climbingLadder : Bool = false
     
@@ -76,7 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // create mario
         createPlayer()
-        player.setScale(0.5)
+        player.setScale(0.25)
         
         
         // donkey kong
@@ -187,6 +188,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         barrel.physicsBody?.categoryBitMask = barrelCategory
         barrel.physicsBody?.collisionBitMask = platformCategory
+        barrel.physicsBody?.contactTestBitMask = playerCategory
         
         barrel.physicsBody?.mass = 1
         barrel.physicsBody?.friction = 50
@@ -233,6 +235,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // player.fillColor = SKColor.purple
         player.position = CGPoint(x: x, y: y)
         player.size = CGSize(width: 50, height: 60)
+        
+        player.physicsBody?.categoryBitMask = princessCategory
+        player.physicsBody?.contactTestBitMask = playerCategory
+        
         self.addChild(player)
         
         return player
@@ -267,6 +273,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if collision == playerCategory | ladderCategory {
             print("Ladder Collision")
+        }
+        
+        if collision == barrelCategory | playerCategory {
+            print("Barrels collision")
+        }
+        
+        if collision == princessCategory | playerCategory {
+            print("Princess is saved")
         }
     }
     
