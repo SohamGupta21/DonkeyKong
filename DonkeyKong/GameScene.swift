@@ -12,25 +12,31 @@ import SwiftUI
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    let player = SKShapeNode(rectOf: CGSize(width: 50, height: 50))
+    var player = SKSpriteNode(imageNamed: "marioL1")
     var donkeyKong = SKSpriteNode()
     var princess = SKShapeNode()
     
-    let donkeyKongTextures = [SKTexture(image: #imageLiteral(resourceName: "kong1")), SKTexture(image: #imageLiteral(resourceName: "kong2")), SKTexture(image: #imageLiteral(resourceName: "kong3")), SKTexture(image: #imageLiteral(resourceName: "kong4")), SKTexture(image: #imageLiteral(resourceName: "kong5")), SKTexture(image: #imageLiteral(resourceName: "kong6"))]
+    let donkeyKongTextures = [SKTexture(image: #imageLiteral(resourceName: "dk1")), SKTexture(image: #imageLiteral(resourceName: "dk2"))]
+    
+    let marioWalkRightTextures = [SKTexture(image: #imageLiteral(resourceName: "marioR1")), SKTexture(image: #imageLiteral(resourceName:"marioR2"))]
+    let marioWalkLeftTextures = [SKTexture(image: #imageLiteral(resourceName: "marioL1")), SKTexture(image: #imageLiteral(resourceName:"marioL2"))]
+    let marioJumpTextures = [SKTexture(image: #imageLiteral(resourceName: "marioclimb1")), SKTexture(image: #imageLiteral(resourceName:"marioclimb2"))]
+    
+    var currentMarioAnimation = ""
     
     var barrelTimer = Timer()
     
     let joystick = TLAnalogJoystick(withDiameter: 100)
     let jumpButton = SKShapeNode(circleOfRadius: 100)
     
-    var ladders : [SKShapeNode] = []
+    var ladders : [SKSpriteNode] = []
     
-    var platforms : [SKShapeNode] = []
-    var endPlatform : SKShapeNode = SKShapeNode()
+    var platforms : [SKSpriteNode] = []
     
     let platformCategory: UInt32 = 0x1 << 0
     let ladderCategory: UInt32 = 0x1 << 1
     let playerCategory: UInt32 = 0x1 << 2
+    let barrelCategory: UInt32 = 0x1 << 3
     
     var climbingLadder : Bool = false
     
@@ -38,6 +44,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         anchorPoint = .zero
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+        
+        //set the animations:
+        let marioRightWalkAnimation = SKAction.animate(with: marioWalkRightTextures, timePerFrame: 0.325)
+        let marioLeftWalkAnimation = SKAction.animate(with: marioWalkLeftTextures, timePerFrame: 0.325)
+        let marioJumpAnimation = SKAction.animate(with: marioJumpTextures, timePerFrame: 0.325)
         
         // creates the platforms
 
@@ -47,7 +58,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         platforms.append(createPlatform(x: size.width * 2 / 3, y: size.height * 4 / 6, rotation: CGFloat.pi / 48))
         platforms.append(createPlatform(x: size.width / 3, y: size.height * 5 / 6, rotation: -CGFloat.pi / 48))
                 
-        endPlatform = createEndPlatform()
         
         // creates the ladders
         let ladderHeight = 200
@@ -56,15 +66,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ladders.append(createLadder(x: size.width * 2 / 3, y: size.height * 2 / 6 + CGFloat(ladderHeight) / 2, height : 250))
         ladders.append(createLadder(x: size.width / 3, y: size.height * 3 / 6 + CGFloat(ladderHeight) / 2, height : 250))
         ladders.append(createLadder(x: size.width * 2 / 3, y: size.height * 4 / 6 + CGFloat(ladderHeight) / 2, height : 250))
-        ladders.append(createLadder (x: size.width / 3, y: size.height * 5 / 6 + CGFloat(ladderHeight) / 2 - 50, height : 75))
         
-        // create the player
+        // create mario
         createPlayer()
+        player.setScale(0.5)
+        
+        
+        // donkey kong
         donkeyKong = createStaticPlayer(x: size.width / 4, y: size.height * 9 / 10, size: 125)
         
         let dkAnimation = SKAction.animate(with: donkeyKongTextures, timePerFrame: 0.4)
         
         donkeyKong.run(SKAction.repeatForever(dkAnimation))
+        
 //        princess = createStaticPlayer(x: size.width / 2, y: size.height * 8 / 9 + 50, size: 50)
 
         // https://github.com/MitrofD/TLAnalogJoystick
@@ -75,6 +89,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         joystick.on(.move) { [unowned self] joystick in
             player.physicsBody?.affectedByGravity = true
             if joystick.angular > -0.75 && joystick.angular < 0.75 {
+                // up
                 climbingLadder = false
                 for ladder in ladders {
                     if positionBasedCollision(nodeA: player, nodeB: ladder) {
@@ -85,21 +100,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     player.physicsBody?.affectedByGravity = false
                     player.physicsBody?.collisionBitMask = 0x1 << 5
                     player.position.y += 2
+                    if currentMarioAnimation != "up" {
+                        player.run(SKAction.repeatForever(marioJumpAnimation))
+                        currentMarioAnimation = "up"
+                    }
                 } else {
                     player.physicsBody?.collisionBitMask = platformCategory
                     player.physicsBody?.affectedByGravity = true
                 }
             } else if joystick.angular > 0.75 && joystick.angular < 2.25 {
+                // left
+                if currentMarioAnimation != "left" {
+                    player.run(SKAction.repeatForever(marioLeftWalkAnimation))
+                    currentMarioAnimation = "left"
+                }
                 player.position.x -= 2
             } else if abs(joystick.angular) > 2.25 {
+                // down
             } else {
+                // right
+                if currentMarioAnimation != "right" {
+                    player.run(SKAction.repeatForever(marioRightWalkAnimation))
+                    currentMarioAnimation = "right"
+                }
                 player.position.x += 2
             }
             
         }
                 
         joystick.on(.end) { [unowned self] _ in
-            print("end")
+            player.removeAllActions()
         }
         
         jumpButton.position = CGPoint(x: size.width * 4 / 5, y: size.height / 10)
@@ -111,11 +141,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //                                                selector:#selector(addChild(createBarrels(radius: 30))),
 //                                                userInfo: nil,
 //                                                repeats: true)
-        
+        addChild(createBarrels(radius: 20))
         for platform in platforms{
             platform.physicsBody?.categoryBitMask = platformCategory
         }
-        endPlatform.physicsBody?.categoryBitMask = platformCategory
         player.physicsBody?.collisionBitMask = platformCategory
         player.physicsBody?.categoryBitMask = playerCategory
         for ladder in ladders {
@@ -128,35 +157,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createPlayer() {
-        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50))
-        player.fillColor = SKColor.green
-        player.position = CGPoint(x:size.width / 2, y:size.width / 2)
-//
-//        player.physicsBody?.categoryBitMask = 2
-//        player.physicsBody?.contactTestBitMask = 0
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height))
+        player.position = CGPoint(x:size.width / 2, y:size.width / 2 - 100)
         player.physicsBody?.friction = 0.7
         
         self.addChild(player)
     }
     
-    func createBarrels(radius : CGFloat) -> SKShapeNode {
-        let barrel = SKShapeNode(circleOfRadius: radius)
+    func createBarrels(radius : CGFloat) -> SKSpriteNode {
+        let barrel = SKSpriteNode(imageNamed: "Barrel")
         
         barrel.physicsBody = SKPhysicsBody(circleOfRadius: radius)
-        barrel.fillColor = SKColor.orange
-        barrel.position = CGPoint(x: size.width / 2, y: size.height * 9 / 10)
-//        barrel.physicsBody?.categoryBitMask = 1
-//        barrel.physicsBody?.contactTestBitMask = 0
+        barrel.size = CGSize(width: radius * 2, height: radius * 2)
+        barrel.position = CGPoint(x: size.width * 5 / 6, y: size.height * 11 / 10)
         barrel.physicsBody?.friction = 0.7
+        
+        barrel.physicsBody?.categoryBitMask = barrelCategory
+        barrel.physicsBody?.collisionBitMask = platformCategory
+        
+        barrel.physicsBody?.mass = 1
+        barrel.physicsBody?.friction = 50
         
         return barrel
     }
     
-    func createPlatform(x: CGFloat, y: CGFloat,rotation: CGFloat) -> SKShapeNode {
-        let rect = SKShapeNode(rectOf: CGSize(width: 650, height: 25))
+    func createPlatform(x: CGFloat, y: CGFloat,rotation: CGFloat) -> SKSpriteNode {
+        let rect = SKSpriteNode(imageNamed: "Platform")
         
         rect.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 650, height: 25))
-        rect.fillColor = SKColor.red
+        rect.size = CGSize(width: 650, height: 25)
         rect.position = CGPoint(x: x, y: y)
         rect.zRotation = rotation
         rect.physicsBody?.affectedByGravity = false
@@ -165,20 +194,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        rect.physicsBody?.collisionBitMask = 0
         
         //rect.physicsBody?.pinned = true
-        
-        self.addChild(rect)
-        
-        return rect
-    }
-    
-    func createEndPlatform() -> SKShapeNode {
-        let rect = SKShapeNode(rectOf: CGSize(width: 200, height: 25))
-        
-        rect.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 200, height: 25))
-        rect.fillColor = SKColor.brown
-        rect.position = CGPoint(x: size.width / 2, y: size.height * 8 / 9 )
-        rect.physicsBody?.affectedByGravity = false
-        rect.physicsBody?.isDynamic = false
         
         self.addChild(rect)
         
@@ -198,11 +213,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return player
     }
     
-    func createLadder(x: CGFloat, y: CGFloat, height: CGFloat) -> SKShapeNode {
-        let rect = SKShapeNode(rectOf: CGSize(width: 50, height: height))
+    func createLadder(x: CGFloat, y: CGFloat, height: CGFloat) -> SKSpriteNode {
+        let rect = SKSpriteNode(imageNamed: "Ladder (1)")
         
         rect.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: height))
-        rect.fillColor = SKColor.cyan
+        rect.size = CGSize(width: 50, height: height)
+       /// rect.fillColor = SKColor.cyan
         rect.position = CGPoint(x: x, y: y)
         rect.physicsBody?.affectedByGravity = false
         rect.physicsBody?.isDynamic = false
@@ -234,7 +250,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let location = touch.location(in: self)
             let touchedNode = atPoint(location)
             if touchedNode.name == "Jump" {
-                player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 75))
+                player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 800))
             }
         }
     }
