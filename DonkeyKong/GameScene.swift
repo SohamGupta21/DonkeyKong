@@ -14,9 +14,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player = SKSpriteNode(imageNamed: "marioL1")
     var donkeyKong = SKSpriteNode()
-    var princess = SKShapeNode()
+    var princess = SKSpriteNode(imageNamed: "princess1")
     
     let donkeyKongTextures = [SKTexture(image: #imageLiteral(resourceName: "dk1")), SKTexture(image: #imageLiteral(resourceName: "dk2"))]
+    let princessTextures = [SKTexture(image: #imageLiteral(resourceName: "princess1")), SKTexture(image: #imageLiteral(resourceName: "princess2"))]
     
     let marioWalkRightTextures = [SKTexture(image: #imageLiteral(resourceName: "marioR1")), SKTexture(image: #imageLiteral(resourceName:"marioR2"))]
     let marioWalkLeftTextures = [SKTexture(image: #imageLiteral(resourceName: "marioL1")), SKTexture(image: #imageLiteral(resourceName:"marioL2"))]
@@ -44,6 +45,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         anchorPoint = .zero
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+        self.backgroundColor = .black
+        self.scaleMode = .aspectFit
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         
         //set the animations:
         let marioRightWalkAnimation = SKAction.animate(with: marioWalkRightTextures, timePerFrame: 0.325)
@@ -58,6 +62,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         platforms.append(createPlatform(x: size.width * 2 / 3, y: size.height * 4 / 6, rotation: CGFloat.pi / 48))
         platforms.append(createPlatform(x: size.width / 3, y: size.height * 5 / 6, rotation: -CGFloat.pi / 48))
                 
+        // create the borders
+        
+        
         
         // creates the ladders
         let ladderHeight = 200
@@ -73,14 +80,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         // donkey kong
-        donkeyKong = createStaticPlayer(x: size.width / 4, y: size.height * 9 / 10, size: 125)
+        donkeyKong = createDonkeyKong(x: size.width / 4, y: size.height * 9 / 10, size: 125)
         
         let dkAnimation = SKAction.animate(with: donkeyKongTextures, timePerFrame: 0.4)
         
         donkeyKong.run(SKAction.repeatForever(dkAnimation))
         
-//        princess = createStaticPlayer(x: size.width / 2, y: size.height * 8 / 9 + 50, size: 50)
-
+        princess = createPrincess(x: size.width / 2, y: size.height * 8 / 9 + 50, size: 50)
+        
+        let princessAnimation = SKAction.animate(with: princessTextures, timePerFrame: 0.4)
+        
+        princess.run(SKAction.repeatForever(princessAnimation))
+        
         // https://github.com/MitrofD/TLAnalogJoystick
         
         joystick.position = CGPoint(x: size.width / 5, y: size.height / 10)
@@ -136,12 +147,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpButton.name = "Jump"
         addChild(jumpButton)
         
-//
-//        barrelTimer = .scheduledTimer(timeInterval: 5, target: self,
-//                                                selector:#selector(addChild(createBarrels(radius: 30))),
-//                                                userInfo: nil,
-//                                                repeats: true)
-        addChild(createBarrels(radius: 20))
+
+        barrelTimer = .scheduledTimer(timeInterval: 5, target: self,
+                                                selector:#selector(createBarrels),
+                                                userInfo: nil,
+                                                repeats: true)
+        //addChild(createBarrels(radius: 20))
         for platform in platforms{
             platform.physicsBody?.categoryBitMask = platformCategory
         }
@@ -164,12 +175,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(player)
     }
     
-    func createBarrels(radius : CGFloat) -> SKSpriteNode {
+    @objc func createBarrels() {
+        let radius = CGFloat(20)
+        
         let barrel = SKSpriteNode(imageNamed: "Barrel")
         
         barrel.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         barrel.size = CGSize(width: radius * 2, height: radius * 2)
-        barrel.position = CGPoint(x: size.width * 5 / 6, y: size.height * 11 / 10)
+        barrel.position = CGPoint(x: size.width * 5 / 6, y: size.height * 9 / 10)
         barrel.physicsBody?.friction = 0.7
         
         barrel.physicsBody?.categoryBitMask = barrelCategory
@@ -178,7 +191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         barrel.physicsBody?.mass = 1
         barrel.physicsBody?.friction = 50
         
-        return barrel
+        self.addChild(barrel)
     }
     
     func createPlatform(x: CGFloat, y: CGFloat,rotation: CGFloat) -> SKSpriteNode {
@@ -200,7 +213,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return rect
     }
     
-    func createStaticPlayer(x: CGFloat, y: CGFloat, size: CGFloat) -> SKSpriteNode {
+    func createDonkeyKong(x: CGFloat, y: CGFloat, size: CGFloat) -> SKSpriteNode {
         let player = SKSpriteNode(imageNamed: "kong1")
         
         player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size, height: size))
@@ -208,6 +221,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.position = CGPoint(x: x, y: y)
         player.texture  = SKTexture(image: #imageLiteral(resourceName: "kong1"))
         
+        self.addChild(player)
+        
+        return player
+    }
+    
+    func createPrincess(x: CGFloat, y: CGFloat, size: CGFloat) -> SKSpriteNode {
+        let player = SKSpriteNode(imageNamed: "princess1")
+        
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: size, height: size))
+        // player.fillColor = SKColor.purple
+        player.position = CGPoint(x: x, y: y)
+        player.size = CGSize(width: 50, height: 60)
         self.addChild(player)
         
         return player
