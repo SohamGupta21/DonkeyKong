@@ -15,6 +15,11 @@
 		3146C3542797A8AD00393226 /* DonkeyKongUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3532797A8AD00393226 /* DonkeyKongUITests.swift */; };
 		3146C3562797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3552797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift */; };
 		3146C3632797AA3D00393226 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C3622797AA3D00393226 /* GameScene.swift */; };
+		31846CF027A249FD002302F6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31846CEF27A249FD002302F6 /* GameView.swift */; };
+		31846CF227A25C20002302F6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31846CF127A25C20002302F6 /* Settings.swift */; };
+		31846CF427A26F34002302F6 /* DonkeyKongTheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 31846CF327A26F33002302F6 /* DonkeyKongTheme.mp3 */; };
+		31846CF627A27C3C002302F6 /* Title.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 31846CF527A27C3C002302F6 /* Title.mp3 */; };
+		31846CF827A28166002302F6 /* 119 Mill Fever.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 31846CF727A28165002302F6 /* 119 Mill Fever.mp3 */; };
 		66A0C62B279F3C7A003E27C2 /* TLAnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A0C62A279F3C7A003E27C2 /* TLAnalogJoystick.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +52,11 @@
 		3146C3532797A8AD00393226 /* DonkeyKongUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonkeyKongUITests.swift; sourceTree = "<group>"; };
 		3146C3552797A8AD00393226 /* DonkeyKongUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DonkeyKongUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		3146C3622797AA3D00393226 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		31846CEF27A249FD002302F6 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		31846CF127A25C20002302F6 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		31846CF327A26F33002302F6 /* DonkeyKongTheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = DonkeyKongTheme.mp3; path = ../../../Downloads/DonkeyKongTheme.mp3; sourceTree = "<group>"; };
+		31846CF527A27C3C002302F6 /* Title.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Title.mp3; path = ../../../Downloads/Title.mp3; sourceTree = "<group>"; };
+		31846CF727A28165002302F6 /* 119 Mill Fever.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "119 Mill Fever.mp3"; path = "../../../Downloads/119 Mill Fever.mp3"; sourceTree = "<group>"; };
 		66A0C62A279F3C7A003E27C2 /* TLAnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TLAnalogJoystick.swift; path = "../../../Downloads/TLAnalogJoystick-master/AnalogStick Demo/AnalogStick Demo/TLAnalogJoystick.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,12 +108,17 @@
 		3146C3372797A8AC00393226 /* DonkeyKong */ = {
 			isa = PBXGroup;
 			children = (
+				31846CF727A28165002302F6 /* 119 Mill Fever.mp3 */,
+				31846CF527A27C3C002302F6 /* Title.mp3 */,
+				31846CF327A26F33002302F6 /* DonkeyKongTheme.mp3 */,
 				66A0C62A279F3C7A003E27C2 /* TLAnalogJoystick.swift */,
 				3146C3622797AA3D00393226 /* GameScene.swift */,
 				3146C3382797A8AC00393226 /* DonkeyKongApp.swift */,
 				3146C33A2797A8AC00393226 /* ContentView.swift */,
 				3146C33C2797A8AD00393226 /* Assets.xcassets */,
 				3146C33E2797A8AD00393226 /* Preview Content */,
+				31846CEF27A249FD002302F6 /* GameView.swift */,
+				31846CF127A25C20002302F6 /* Settings.swift */,
 			);
 			path = DonkeyKong;
 			sourceTree = "<group>";
@@ -238,6 +253,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3146C3402797A8AD00393226 /* Preview Assets.xcassets in Resources */,
+				31846CF827A28166002302F6 /* 119 Mill Fever.mp3 in Resources */,
+				31846CF627A27C3C002302F6 /* Title.mp3 in Resources */,
+				31846CF427A26F34002302F6 /* DonkeyKongTheme.mp3 in Resources */,
 				3146C33D2797A8AD00393226 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,10 +281,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31846CF227A25C20002302F6 /* Settings.swift in Sources */,
 				3146C3632797AA3D00393226 /* GameScene.swift in Sources */,
 				3146C33B2797A8AC00393226 /* ContentView.swift in Sources */,
 				3146C3392797A8AC00393226 /* DonkeyKongApp.swift in Sources */,
 				66A0C62B279F3C7A003E27C2 /* TLAnalogJoystick.swift in Sources */,
+				31846CF027A249FD002302F6 /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
