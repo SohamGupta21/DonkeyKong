@@ -371,8 +371,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func gameOverSequence(){
         
         gameOver = true
-        backgroundMusic.run(SKAction.stop())
-        backgroundMusic.removeFromParent()
+ 
         player.removeFromParent()
         let gameOverLabel       = SKLabelNode(fontNamed: "Chalkduster")
         gameOverLabel.position  = CGPoint(x: size.width / 2, y: size.height / 2)
